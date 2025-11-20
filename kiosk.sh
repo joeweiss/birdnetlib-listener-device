@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Clean up any WAV files that are left in the queue.
-rm /home/pi/Code/birdnetlib-listener-device/audio/inbox/*.wav
-
+# rm /home/pi/Code/birdnetlib-listener-device/audio/inbox/*.wav
+find /home/pi/Code/birdnetlib-listener-device/audio/inbox -type f -name '*.wav' -delete
 
 # Delay so the docker container has time to start.
 url="http://localhost:8000/static/dist/index.html"  # Replace with the URL you want to check
