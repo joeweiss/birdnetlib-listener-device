@@ -110,8 +110,8 @@ def main():
     analyzer = Analyzer()
     analyzers = [analyzer]
 
-    lon = -77.3664
-    lat = 35.6127
+    lon = settings.LONGITUDE
+    lat = settings.LATITUDE
     min_conf = DETECTION_CONFIDENCE_THRESHOLD
 
     if PROCESS_EXISTING_BEFORE_WATCHING:
