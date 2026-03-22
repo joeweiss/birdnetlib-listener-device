@@ -217,6 +217,8 @@ OPENWEATHERAPI_KEY = os.environ.get("OPENWEATHERAPI_KEY")
 LONGITUDE = float(os.environ.get("LONGITUDE", -77.4011))  # Default: Winterville, NC
 LATITUDE = float(os.environ.get("LATITUDE", 35.5318))    # Default: Winterville, NC
 PLACE_NAME = os.environ.get("PLACE_NAME")
+
+print(f"[settings] LONGITUDE={LONGITUDE}, LATITUDE={LATITUDE}, PLACE_NAME={PLACE_NAME} (from env: LONGITUDE={'set' if os.environ.get('LONGITUDE') else 'NOT SET'}, LATITUDE={'set' if os.environ.get('LATITUDE') else 'NOT SET'})")
 WEATHER_CACHE_SECONDS = 60 * 10
 
 KIOSK_DETECTIONS_NOW_MINUTES = int(

@@ -114,6 +114,9 @@ def main():
     lat = settings.LATITUDE
     min_conf = DETECTION_CONFIDENCE_THRESHOLD
 
+    print("LATITUDE", lat)
+    print("LONGITUDE", lon)
+
     if PROCESS_EXISTING_BEFORE_WATCHING:
         print("Processing existing")
         directory_analyzer = DirectoryAnalyzer(

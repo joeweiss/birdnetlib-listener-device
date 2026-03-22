@@ -33,6 +33,7 @@ admin.site.register(app_models.Analyzer, AnalyzerAdmin)
 
 class AnalysisAdmin(admin.ModelAdmin):
     list_display = ["recording", "analyzer"]
+    raw_id_fields = ["recording"]
 
 
 admin.site.register(app_models.Analysis, AnalysisAdmin)
