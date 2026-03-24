@@ -1,6 +1,10 @@
+from datetime import datetime
+
+from django.conf import settings
 from django.views.generic import ListView
+from django.shortcuts import get_object_or_404, HttpResponse, render
+
 from recordings.models import Detection, Species
-from django.shortcuts import get_object_or_404, HttpResponse
 
 
 class DetectionSpeciesListView(ListView):
@@ -17,6 +21,37 @@ class DetectionSpeciesListView(ListView):
         context = super(DetectionSpeciesListView, self).get_context_data(**kwargs)
         context["species"] = self.species
         return context
+
+
+def species_list_preview(request):
+    from birdnetlib.species import SpeciesList
+
+    lat = settings.LATITUDE
+    lon = settings.LONGITUDE
+    default_threshold = 0.03
+    threshold = float(request.GET.get("threshold", default_threshold))
+    today = datetime.now()
+
+    species = SpeciesList()
+    results = species.return_list(
+        lon=lon,
+        lat=lat,
+        date=today,
+        threshold=threshold,
+    )
+
+    threshold_options = [0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.3, 0.5]
+
+    return render(request, "recordings/species_list_preview.html", {
+        "lat": lat,
+        "lon": lon,
+        "date": today,
+        "threshold": threshold,
+        "default_threshold": default_threshold,
+        "species_list": results,
+        "species_count": len(results),
+        "threshold_options": threshold_options,
+    })
 
 
 def index(request):

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Species List Preview{% endblock %}
+
+{% block content %}
+    <h1>Species List Preview</h1>
+    <table>
+        <tr><td><strong>Latitude</strong></td><td>{{ lat }}</td></tr>
+        <tr><td><strong>Longitude</strong></td><td>{{ lon }}</td></tr>
+        <tr><td><strong>Date</strong></td><td>{{ date|date:"N j, Y" }}</td></tr>
+        <tr><td><strong>Threshold</strong></td><td>{{ threshold }}</td></tr>
+        <tr><td><strong>Species count</strong></td><td>{{ species_count }}</td></tr>
+    </table>
+
+    <h2>Preview different thresholds</h2>
+    <p>
+        {% for t in threshold_options %}
+            {% if t == threshold %}
+                <strong>[{{ t }}]</strong>
+            {% else %}
+                <a href="?threshold={{ t }}">{{ t }}</a>
+            {% endif %}
+        {% endfor %}
+    </p>
+
+    <h2>Species ({{ species_count }})</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Common Name</th>
+                <th>Scientific Name</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in species_list %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ s.common_name }}</td>
+                <td><em>{{ s.scientific_name }}</em></td>
+                <td>{{ s.threshold|floatformat:4 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
