@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from recordings.models import Detection, Species, SpeciesImage
 from django.utils import timezone
 from datetime import timedelta
-from django.db.models import Count
+from django.db.models import Avg, Count, Max
 from datetime import datetime
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -116,6 +116,8 @@ class SpeciesCountSerializer(serializers.Serializer):
     scientific_name = serializers.CharField(source="species__scientific_name")
     id = serializers.IntegerField(source="species__id")
     count = serializers.IntegerField()
+    avg_confidence = serializers.FloatField()
+    max_confidence = serializers.FloatField()
 
 
 class DailySpeciesViewSet(viewsets.ReadOnlyModelViewSet):
@@ -161,7 +163,7 @@ class DailySpeciesViewSet(viewsets.ReadOnlyModelViewSet):
             query.values(
                 "species__common_name", "species__scientific_name", "species__id"
             )
-            .annotate(count=Count("species"))
+            .annotate(count=Count("species"), avg_confidence=Avg("confidence"), max_confidence=Max("confidence"))
             .order_by("-count")
             .distinct()
         )
