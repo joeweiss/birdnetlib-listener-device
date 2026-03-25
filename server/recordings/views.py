@@ -23,6 +23,15 @@ class DetectionSpeciesListView(ListView):
         return context
 
 
+class LatestExtractionsListView(ListView):
+    template_name = "recordings/latest_extractions.html"
+    context_object_name = "detections"
+    paginate_by = 25
+
+    def get_queryset(self):
+        return Detection.objects.filter(extracted=True).order_by("-detected_at").select_related("species")
+
+
 def species_list_preview(request):
     from birdnetlib.species import SpeciesList
 

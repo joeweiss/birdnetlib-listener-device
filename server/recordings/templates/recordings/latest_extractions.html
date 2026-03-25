@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Latest Extractions{% endblock %}
+
+{% block content %}
+    <h1>Latest Extractions</h1>
+
+    {% for detection in detections %}
+        <div>
+            <h3>
+                <a href="{% url 'recordings:detection_species' id=detection.species.id %}">{{ detection.species.common_name }}</a>
+                — {{ detection.detected_at }}
+            </h3>
+            <p>Confidence: {{ detection.confidence|floatformat:2 }}</p>
+            <p><audio controls>
+                <source src="{{ detection.extracted_file.url }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio></p>
+        </div>
+    {% empty %}
+        <p>No extractions yet.</p>
+    {% endfor %}
+
+    {% if is_paginated %}
+        <div>
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Next</a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

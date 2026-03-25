@@ -143,16 +143,19 @@ class DailySpeciesViewSet(viewsets.ReadOnlyModelViewSet):
         query = Detection.objects.all()
 
         if start_date:
-            # print("tz_start_date", tz_start_date)
-            query = query.filter(detected_at__date__gte=tz_start_date)
+            query = query.filter(detected_at__gte=tz_start_date)
 
         if end_date:
-            # print("tz_end_date", tz_end_date)
-            query = query.filter(detected_at__date__lte=tz_end_date)
+            tz_end_date = tz_end_date + timedelta(days=1)
+            query = query.filter(detected_at__lt=tz_end_date)
 
         if not start_date and not end_date:
-            # Filter just for today.
-            query = query.filter(detected_at__date=timezone.now())
+            # Filter just for today using a range to avoid __date function scan.
+            today_start = timezone.make_aware(
+                datetime.combine(timezone.localtime(timezone.now()).date(), datetime.min.time())
+            )
+            today_end = today_start + timedelta(days=1)
+            query = query.filter(detected_at__range=(today_start, today_end))
 
         queryset = (
             query.values(

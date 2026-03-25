@@ -1,5 +1,5 @@
 from django.urls import path
-from recordings.views import DetectionSpeciesListView, index, species_list_preview
+from recordings.views import DetectionSpeciesListView, LatestExtractionsListView, index, species_list_preview
 from recordings.api_views import (
     daily_bird_report,
     get_weather_conditions,
@@ -15,6 +15,7 @@ urlpatterns = [
     path("api/weather/forecast/", get_weather_forecast),
     path("species/<id>/", DetectionSpeciesListView.as_view(), name="detection_species"),
     path("api/testing/populate_detections_now/", populate_fake_detections),
+    path("extractions/", LatestExtractionsListView.as_view(), name="latest_extractions"),
     path("species-list/", species_list_preview, name="species_list_preview"),
     path("", index),
 ]
